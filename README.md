@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏥 Pharmacy Management System – ERP Template
 
-## Getting Started
+A modular and extensible ERP template for pharmacies, built to manage sales, inventory, billing, accounting, and compliance—all in one system.
 
-First, run the development server:
+## 📦 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This project provides a ready-to-integrate backend structure for a **pharmacy business management system**, with pre-defined data models, mock data, and SQL reporting views for real-world operations.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### ✅ User & Company Management
+- Multi-company support
+- User roles, permissions, and audit trails
+- Company overview with user counts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🧾 Billing & Invoicing
+- Electronic invoice structure (SUNAT-ready)
+- Invoice headers, detailed lines, and customer ledgers
+- Monthly revenue tracking
+- Overdue invoice alerts
 
-## Learn More
+### 🛒 Point of Sale (POS)
+- POS session handling
+- Order and payment processing
+- Daily closure reports with variances
 
-To learn more about Next.js, take a look at the following resources:
+### 📦 Inventory Management
+- Product categories and unit conversions
+- Warehouse and location structure
+- Lot management and expiration control
+- Low stock alerts and reorder suggestions
+- Full lot traceability
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📊 Accounting
+- Chart of accounts with hierarchy
+- Journal entries and move lines
+- Trial balance and profit & loss summaries
+- Pending reconciliation view
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📈 Cross-Module Reports
+- Company-wide KPIs
+- Login and activity audit logs
+- Custom views for dashboards
