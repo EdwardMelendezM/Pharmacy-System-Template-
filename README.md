@@ -41,3 +41,16 @@ This project provides a ready-to-integrate backend structure for a **pharmacy bu
 - Company-wide KPIs
 - Login and activity audit logs
 - Custom views for dashboards
+
+## 🧪 Technologies
+
+- **Language:** TypeScript
+- **Database:** PostgreSQL/MySQL (view definitions are SQL-ready)
+- **Architecture:** Modular & scalable backend-ready structure
+- **Use case:** API development, admin dashboards, analytics, pharmacy ERP systems
+
+## 🤝 Contributing
+Feel free to submit PRs or issues to improve data models, add more views, or suggest improvements.
+
+## 📄 License
+This project is open-source under the MIT License.
