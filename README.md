@@ -54,3 +54,8 @@ Feel free to submit PRs or issues to improve data models, add more views, or sug
 
 ## 📄 License
 This project is open-source under the MIT License.
+
+## Next steps
+- Include multilanguages
+- Include multitenants
+- Include monitoring with sentry
