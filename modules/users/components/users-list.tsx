@@ -46,6 +46,7 @@ import {
   Clock,
   Lock,
   Filter,
+  UserIcon,
 } from "lucide-react"
 
 export function UsersList() {
@@ -223,7 +224,10 @@ export function UsersList() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Usuarios</CardTitle>
+          <CardTitle className="flex items-center">
+            <UserIcon className="h-5 w-5 mr-2" />
+            Usuarios
+          </CardTitle>
           <CardDescription>Ver y gestionar los usuarios del sistema</CardDescription>
         </CardHeader>
         <CardContent>

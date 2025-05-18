@@ -1,29 +1,27 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { UsersList } from "@/modules/users/components/users-list"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { StoresList } from "@/modules/users/components/stores-list"
-import { ActiveUsersView } from "@/modules/users/components/active-users-view"
-import { UserRolesView } from "@/modules/users/components/user-roles-view"
-import Link from "next/link"
+import { MapPin } from "lucide-react"
 
 export default function StoresPage() {
-  const [activeTab, setActiveTab] = useState("users")
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Users & Tiendas</h1>
-        <div className="flex gap-2">
-          <Link href="/users/add-company">
-            <Button variant="outline">Add Tienda</Button>
-          </Link>
-        </div>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <h1 className="text-3xl font-bold tracking-tight">Gestión de sucursales</h1>
       </div>
-
-      <StoresList />
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <MapPin className="h-5 w-5 mr-2" />
+            Sucursales
+          </CardTitle>
+          <CardDescription>Ver y gestionar los sucursales</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <StoresList />
+        </CardContent>
+      </Card>
     </div>
   )
 }
