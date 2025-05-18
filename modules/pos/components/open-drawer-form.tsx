@@ -1,208 +1,155 @@
 "use client"
 
+import type React from "react"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { CalendarIcon, Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { format } from "date-fns"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-
-const formSchema = z.object({
-  date: z.date({
-    required_error: "A date is required.",
-  }),
-  cashier: z.string().min(1, { message: "Cashier is required" }),
-  register: z.string().min(1, { message: "Register is required" }),
-  initialAmount: z.string().min(1, { message: "Initial amount is required" }),
-  notes: z.string().optional(),
-})
-
-type FormValues = z.infer<typeof formSchema>
+import { toast } from "@/components/ui/use-toast"
+import { openCashDrawer } from "@/lib/actions/pos-actions"
+import { useCashDrawer } from "@/lib/context/cash-drawer-context"
 
 export function OpenDrawerForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
+  const { refreshCashDrawer } = useCashDrawer()
 
-  const defaultValues: Partial<FormValues> = {
-    date: new Date(),
-    cashier: "",
-    register: "",
-    initialAmount: "",
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState({
+    userId: "john.doe",
+    userName: "John Doe",
+    registerName: "Caja Principal",
+    openingAmount: 0,
     notes: "",
-  }
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues,
   })
 
-  async function onSubmit(data: FormValues) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "openingAmount" ? Number.parseFloat(value) || 0 : value,
+    }))
+  }
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     setIsSubmitting(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-      console.log("Form submitted:", data)
+      const result = await openCashDrawer(formData)
 
-      // Navigate back to POS page after successful submission
-      router.push("/pos")
+      if (result.success) {
+        toast({
+          title: "Caja abierta",
+          description: "La caja ha sido abierta exitosamente.",
+        })
+
+        // Actualizar el contexto de la caja
+        await refreshCashDrawer()
+
+        // Redirigir al POS
+        router.push("/pos")
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Hubo un error al abrir la caja.",
+          variant: "destructive",
+        })
+      }
     } catch (error) {
-      console.error("Error submitting form:", error)
+      console.error("Error opening cash drawer:", error)
+      toast({
+        title: "Error",
+        description: "Hubo un error al abrir la caja.",
+        variant: "destructive",
+      })
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <Card>
+    <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Open Cash Drawer</CardTitle>
-        <CardDescription>Start a new POS session by opening the cash drawer.</CardDescription>
+        <CardTitle>Abrir Caja</CardTitle>
+        <CardDescription>Completa la información para abrir una nueva caja.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
-                          >
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <form onSubmit={handleSubmit}>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="userName">Cajero</Label>
+            <Select value={formData.userName} onValueChange={(value) => handleSelectChange("userName", value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar cajero" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="John Doe">John Doe</SelectItem>
+                <SelectItem value="Jane Smith">Jane Smith</SelectItem>
+                <SelectItem value="Robert Johnson">Robert Johnson</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-              <FormField
-                control={form.control}
-                name="cashier"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cashier</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select cashier" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="john.doe">John Doe</SelectItem>
-                        <SelectItem value="jane.smith">Jane Smith</SelectItem>
-                        <SelectItem value="robert.johnson">Robert Johnson</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <div className="space-y-2">
+            <Label htmlFor="registerName">Caja</Label>
+            <Select value={formData.registerName} onValueChange={(value) => handleSelectChange("registerName", value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar caja" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Caja Principal">Caja Principal</SelectItem>
+                <SelectItem value="Caja Secundaria">Caja Secundaria</SelectItem>
+                <SelectItem value="Caja Rápida">Caja Rápida</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-              <FormField
-                control={form.control}
-                name="register"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Register</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select register" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="register1">Register 1</SelectItem>
-                        <SelectItem value="register2">Register 2</SelectItem>
-                        <SelectItem value="register3">Register 3</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="initialAmount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Initial Cash Amount</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <span className="absolute left-3 top-2.5">$</span>
-                        <Input placeholder="0.00" className="pl-7" {...field} type="number" step="0.01" min="0" />
-                      </div>
-                    </FormControl>
-                    <FormDescription>Enter the starting cash amount in the drawer.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Add any additional notes here..." className="resize-none" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+          <div className="space-y-2">
+            <Label htmlFor="openingAmount">Monto Inicial ($)</Label>
+            <Input
+              id="openingAmount"
+              name="openingAmount"
+              type="number"
+              step="0.01"
+              min="0"
+              value={formData.openingAmount}
+              onChange={handleChange}
+              required
             />
+          </div>
 
-            <CardFooter className="flex justify-between px-0">
-              <Button type="button" variant="outline" onClick={() => router.push("/pos")}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Opening Drawer...
-                  </>
-                ) : (
-                  "Open Drawer"
-                )}
-              </Button>
-            </CardFooter>
-          </form>
-        </Form>
-      </CardContent>
+          <div className="space-y-2">
+            <Label htmlFor="notes">Notas (opcional)</Label>
+            <Textarea
+              id="notes"
+              name="notes"
+              value={formData.notes}
+              onChange={handleChange}
+              placeholder="Agregar notas adicionales..."
+              rows={3}
+            />
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button variant="outline" type="button" onClick={() => router.back()}>
+            Cancelar
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Abriendo..." : "Abrir Caja"}
+          </Button>
+        </CardFooter>
+      </form>
     </Card>
   )
 }

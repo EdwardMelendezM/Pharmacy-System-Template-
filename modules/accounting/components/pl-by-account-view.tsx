@@ -139,7 +139,7 @@ export function PLByAccountView() {
         <Card>
           <CardContent className="pt-6">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Income</p>
+              <p className="text-sm font-medium text-muted-foreground">Ingresos Totales</p>
               <h3 className="text-2xl font-bold text-green-600">S/ {totalIncome.toFixed(2)}</h3>
             </div>
           </CardContent>
@@ -147,7 +147,7 @@ export function PLByAccountView() {
         <Card>
           <CardContent className="pt-6">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Expenses</p>
+              <p className="text-sm font-medium text-muted-foreground">Gastos Totales</p>
               <h3 className="text-2xl font-bold text-red-600">S/ {Math.abs(totalExpense).toFixed(2)}</h3>
             </div>
           </CardContent>
@@ -155,9 +155,9 @@ export function PLByAccountView() {
         <Card>
           <CardContent className="pt-6">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Net Profit</p>
+              <p className="text-sm font-medium text-muted-foreground">Utilidad Neta</p>
               <h3 className={`text-2xl font-bold ${netProfit >= 0 ? "text-green-600" : "text-red-600"}`}>
-                S/ {Math.abs(netProfit).toFixed(2)} {netProfit < 0 ? "(Loss)" : ""}
+                S/ {Math.abs(netProfit).toFixed(2)} {netProfit < 0 ? "(Pérdida)" : ""}
               </h3>
             </div>
           </CardContent>
@@ -170,7 +170,7 @@ export function PLByAccountView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by account code or name..."
+              placeholder="Buscar por código o nombre de cuenta..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -178,18 +178,18 @@ export function PLByAccountView() {
           </div>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by type" />
+              <SelectValue placeholder="Filtrar por tipo" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="Income">Income</SelectItem>
-              <SelectItem value="Expense">Expense</SelectItem>
+              <SelectItem value="all">Todos los Tipos</SelectItem>
+              <SelectItem value="Income">Ingreso</SelectItem>
+              <SelectItem value="Expense">Gasto</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -197,12 +197,12 @@ export function PLByAccountView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Account Code</TableHead>
-              <TableHead>Account Name</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Debit</TableHead>
-              <TableHead>Credit</TableHead>
-              <TableHead>Net Amount</TableHead>
+              <TableHead>Código</TableHead>
+              <TableHead>Nombre de Cuenta</TableHead>
+              <TableHead>Tipo</TableHead>
+              <TableHead>Débito</TableHead>
+              <TableHead>Crédito</TableHead>
+              <TableHead>Importe Neto</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -213,7 +213,7 @@ export function PLByAccountView() {
                   <TableCell>{account.account_name}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className={typeColors[account.type] || "bg-gray-100 text-gray-800"}>
-                      {account.type}
+                      {account.type === "Income" ? "Ingreso" : "Gasto"}
                     </Badge>
                   </TableCell>
                   <TableCell>S/ {account.total_debit.toFixed(2)}</TableCell>
@@ -227,14 +227,14 @@ export function PLByAccountView() {
                           : ""
                     }
                   >
-                    S/ {Math.abs(account.net_amount).toFixed(2)} {account.net_amount < 0 ? "(Expense)" : "(Income)"}
+                    S/ {Math.abs(account.net_amount).toFixed(2)} {account.net_amount < 0 ? "(Gasto)" : "(Ingreso)"}
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-4 text-muted-foreground">
-                  No accounts found
+                  No se encontraron cuentas
                 </TableCell>
               </TableRow>
             )}

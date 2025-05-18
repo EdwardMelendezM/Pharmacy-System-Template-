@@ -20,31 +20,31 @@ import { format } from "date-fns"
 
 const transactionFormSchema = z.object({
   date: z.date({
-    required_error: "A date is required.",
+    required_error: "Fecha es requerida.",
   }),
   reference: z.string().min(1, {
-    message: "Reference is required.",
+    message: "Referencia es requerida.",
   }),
   description: z.string().min(1, {
-    message: "Description is required.",
+    message: "Descripción es requerida.",
   }),
   entries: z
     .array(
       z.object({
         account: z.string({
-          required_error: "Account is required.",
+          required_error: "Cuenta es requerida.",
         }),
         description: z.string().optional(),
         debit: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-          message: "Debit must be a valid number.",
+          message: "Debito debe ser un número válido.",
         }),
         credit: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-          message: "Credit must be a valid number.",
+          message: "Crédito debe ser un número válido.",
         }),
       }),
     )
     .min(2, {
-      message: "At least two entries are required.",
+      message: "Se requieren al menos dos entradas.",
     })
     .refine(
       (entries) => {
@@ -53,7 +53,7 @@ const transactionFormSchema = z.object({
         return Math.abs(totalDebit - totalCredit) < 0.01 // Allow for small floating point differences
       },
       {
-        message: "Total debits must equal total credits.",
+        message: "Las entradas deben estar balanceadas (debitos = creditos).",
       },
     ),
 })
@@ -118,8 +118,8 @@ export function NewTransactionForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>New Transaction</CardTitle>
-        <CardDescription>Create a new accounting transaction with balanced debits and credits.</CardDescription>
+        <CardTitle>Nueva Transacción</CardTitle>
+        <CardDescription>Crea una nueva transacción contable con débitos y créditos balanceados.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -130,7 +130,7 @@ export function NewTransactionForm() {
                 name="date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date</FormLabel>
+                    <FormLabel>Fecha</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -138,7 +138,7 @@ export function NewTransactionForm() {
                             variant={"outline"}
                             className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                           >
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                            {field.value ? format(field.value, "PPP") : <span>Seleccionar una fecha</span>}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
@@ -162,7 +162,7 @@ export function NewTransactionForm() {
                 name="reference"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Reference</FormLabel>
+                    <FormLabel>Referencia</FormLabel>
                     <FormControl>
                       <Input placeholder="JE-2023-001" {...field} />
                     </FormControl>
@@ -177,9 +177,9 @@ export function NewTransactionForm() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Descripción</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Transaction description" className="resize-none" {...field} />
+                    <Textarea placeholder="Descripción de la transacción" className="resize-none" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -188,7 +188,7 @@ export function NewTransactionForm() {
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">Journal Entries</h3>
+                <h3 className="text-lg font-medium">Asientos Contables</h3>
                 <Button
                   type="button"
                   variant="outline"
@@ -198,7 +198,7 @@ export function NewTransactionForm() {
                   }}
                 >
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Entry
+                  Añadir Asiento
                 </Button>
               </div>
 
@@ -206,11 +206,11 @@ export function NewTransactionForm() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b bg-muted/50">
-                      <th className="py-3 px-4 text-left text-sm font-medium">Account</th>
-                      <th className="py-3 px-4 text-left text-sm font-medium">Description</th>
-                      <th className="py-3 px-4 text-right text-sm font-medium">Debit</th>
-                      <th className="py-3 px-4 text-right text-sm font-medium">Credit</th>
-                      <th className="py-3 px-4 text-center text-sm font-medium w-[80px]">Actions</th>
+                      <th className="py-3 px-4 text-left text-sm font-medium">Cuenta</th>
+                      <th className="py-3 px-4 text-left text-sm font-medium">Descripción</th>
+                      <th className="py-3 px-4 text-right text-sm font-medium">Débito</th>
+                      <th className="py-3 px-4 text-right text-sm font-medium">Crédito</th>
+                      <th className="py-3 px-4 text-center text-sm font-medium w-[80px]">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -225,7 +225,7 @@ export function NewTransactionForm() {
                                 <FormControl>
                                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <SelectTrigger className="w-full border-none shadow-none h-8 p-0 focus:ring-0">
-                                      <SelectValue placeholder="Select account" />
+                                      <SelectValue placeholder="Seleccionar cuenta" />
                                     </SelectTrigger>
                                     <SelectContent>
                                       {accounts.map((account) => (
@@ -249,7 +249,7 @@ export function NewTransactionForm() {
                               <FormItem className="space-y-0">
                                 <FormControl>
                                   <Input
-                                    placeholder="Description"
+                                    placeholder="Descripción"
                                     className="border-none shadow-none h-8 p-0 focus:ring-0"
                                     {...field}
                                   />
@@ -321,7 +321,7 @@ export function NewTransactionForm() {
                     ))}
                     <tr className="bg-muted/30">
                       <td className="py-3 px-4 font-medium" colSpan={2}>
-                        Totals
+                        Totales
                       </td>
                       <td className="py-3 px-4 text-right font-medium">{totalDebit.toFixed(2)}</td>
                       <td className="py-3 px-4 text-right font-medium">{totalCredit.toFixed(2)}</td>
@@ -333,17 +333,18 @@ export function NewTransactionForm() {
 
               {!isBalanced && (
                 <p className="text-sm text-red-500">
-                  Debits and credits must be equal. Current difference: {Math.abs(totalDebit - totalCredit).toFixed(2)}
+                  Los débitos y créditos deben ser iguales. Diferencia actual:{" "}
+                  {Math.abs(totalDebit - totalCredit).toFixed(2)}
                 </p>
               )}
             </div>
 
             <CardFooter className="flex justify-between px-0">
               <Button variant="outline" type="button" onClick={() => router.back()}>
-                Cancel
+                Cancelar
               </Button>
               <Button type="submit" disabled={isSubmitting || !isBalanced}>
-                {isSubmitting ? "Creating..." : "Create Transaction"}
+                {isSubmitting ? "Creando..." : "Crear Transacción"}
               </Button>
             </CardFooter>
           </form>

@@ -147,7 +147,7 @@ export function ChartOfAccountsView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by code or name..."
+              placeholder="Buscar por código o nombre..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -155,20 +155,20 @@ export function ChartOfAccountsView() {
           </div>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by type" />
+              <SelectValue placeholder="Filtrar por tipo" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="Asset">Asset</SelectItem>
-              <SelectItem value="Liability">Liability</SelectItem>
-              <SelectItem value="Income">Income</SelectItem>
-              <SelectItem value="Expense">Expense</SelectItem>
+              <SelectItem value="all">Todos los tipos</SelectItem>
+              <SelectItem value="Asset">Activo</SelectItem>
+              <SelectItem value="Liability">Pasivo</SelectItem>
+              <SelectItem value="Income">Ingreso</SelectItem>
+              <SelectItem value="Expense">Gasto</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -176,10 +176,10 @@ export function ChartOfAccountsView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Code</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Parent</TableHead>
+              <TableHead>Código</TableHead>
+              <TableHead>Nombre</TableHead>
+              <TableHead>Tipo</TableHead>
+              <TableHead>Cuenta padre</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -201,7 +201,7 @@ export function ChartOfAccountsView() {
             ) : (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-4 text-muted-foreground">
-                  No accounts found
+                  No se encontraron cuentas
                 </TableCell>
               </TableRow>
             )}

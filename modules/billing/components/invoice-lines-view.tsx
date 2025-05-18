@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { DownloadIcon, Search } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-// Mock data for invoice lines
-const invoiceLines = [
+// Datos simulados para líneas de factura
+const lineasFactura = [
   {
     line_id: 1,
     invoice_id: 1001,
@@ -77,24 +77,23 @@ const invoiceLines = [
   },
 ]
 
-// Get unique invoice codes for the filter
-const uniqueInvoiceCodes = [...new Set(invoiceLines.map((line) => line.invoice_code))]
+// Obtener códigos únicos de facturas para el filtro
+const codigosFacturaUnicos = [...new Set(lineasFactura.map((linea) => linea.invoice_code))]
 
 export function InvoiceLinesView() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [invoiceFilter, setInvoiceFilter] = useState("all")
+  const [terminoBusqueda, setTerminoBusqueda] = useState("")
+  const [filtroFactura, setFiltroFactura] = useState("all")
 
-  // Filter invoice lines based on search term and invoice code
-  const filteredLines = invoiceLines.filter((line) => {
-    const matchesSearch =
-      line.product_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      line.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      line.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      line.invoice_code.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filtrar líneas de factura por término de búsqueda y código de factura
+  const lineasFiltradas = lineasFactura.filter((linea) => {
+    const coincideBusqueda =
+      linea.product_code.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+      linea.description.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
+      linea.invoice_code.toLowerCase().includes(terminoBusqueda.toLowerCase())
 
-    const matchesInvoice = invoiceFilter === "all" || line.invoice_code === invoiceFilter
+    const coincideFactura = filtroFactura === "all" || linea.invoice_code === filtroFactura
 
-    return matchesSearch && matchesInvoice
+    return coincideBusqueda && coincideFactura
   })
 
   return (
@@ -105,21 +104,21 @@ export function InvoiceLinesView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by product code or description..."
+              placeholder="Buscar por código o descripción del producto..."
               className="pl-8"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={terminoBusqueda}
+              onChange={(e) => setTerminoBusqueda(e.target.value)}
             />
           </div>
-          <Select value={invoiceFilter} onValueChange={setInvoiceFilter}>
+          <Select value={filtroFactura} onValueChange={setFiltroFactura}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by invoice" />
+              <SelectValue placeholder="Filtrar por factura" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Invoices</SelectItem>
-              {uniqueInvoiceCodes.map((code) => (
-                <SelectItem key={code} value={code}>
-                  {code}
+              <SelectItem value="all">Todas las facturas</SelectItem>
+              {codigosFacturaUnicos.map((codigo) => (
+                <SelectItem key={codigo} value={codigo}>
+                  {codigo}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -127,7 +126,7 @@ export function InvoiceLinesView() {
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -135,32 +134,32 @@ export function InvoiceLinesView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Invoice</TableHead>
-              <TableHead>Product Code</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Unit Price</TableHead>
+              <TableHead>Factura</TableHead>
+              <TableHead>Código</TableHead>
+              <TableHead>Descripción</TableHead>
+              <TableHead>Cantidad</TableHead>
+              <TableHead>Precio Unitario</TableHead>
               <TableHead>IGV</TableHead>
               <TableHead>Total</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredLines.length > 0 ? (
-              filteredLines.map((line) => (
-                <TableRow key={line.line_id}>
-                  <TableCell>{line.invoice_code}</TableCell>
-                  <TableCell className="font-medium">{line.product_code}</TableCell>
-                  <TableCell>{line.description}</TableCell>
-                  <TableCell>{line.quantity}</TableCell>
-                  <TableCell>S/ {line.unit_price.toFixed(2)}</TableCell>
-                  <TableCell>S/ {line.igv_amount.toFixed(2)}</TableCell>
-                  <TableCell>S/ {line.total_line.toFixed(2)}</TableCell>
+            {lineasFiltradas.length > 0 ? (
+              lineasFiltradas.map((linea) => (
+                <TableRow key={linea.line_id}>
+                  <TableCell>{linea.invoice_code}</TableCell>
+                  <TableCell className="font-medium">{linea.product_code}</TableCell>
+                  <TableCell>{linea.description}</TableCell>
+                  <TableCell>{linea.quantity}</TableCell>
+                  <TableCell>S/ {linea.unit_price.toFixed(2)}</TableCell>
+                  <TableCell>S/ {linea.igv_amount.toFixed(2)}</TableCell>
+                  <TableCell>S/ {linea.total_line.toFixed(2)}</TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-4 text-muted-foreground">
-                  No invoice lines found
+                  No se encontraron líneas de factura
                 </TableCell>
               </TableRow>
             )}

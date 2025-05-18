@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { DownloadIcon, Search } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-// Mock data for monthly revenue
+// Datos simulados para ingresos mensuales
 const monthlyRevenue = [
   {
     id: 1,
@@ -92,26 +92,26 @@ const monthlyRevenue = [
   },
 ]
 
-// Get unique companies for the filter
+// Obtener empresas únicas para el filtro
 const uniqueCompanies = [...new Set(monthlyRevenue.map((item) => item.company_name))]
 
-// Get unique years for the filter
+// Obtener años únicos para el filtro
 const uniqueYears = [...new Set(monthlyRevenue.map((item) => item.year))]
 
-// Month names
+// Nombres de los meses
 const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
 ]
 
 export function MonthlyRevenueView() {
@@ -119,7 +119,7 @@ export function MonthlyRevenueView() {
   const [companyFilter, setCompanyFilter] = useState("all")
   const [yearFilter, setYearFilter] = useState("all")
 
-  // Filter revenue data based on search term, company, and year
+  // Filtrar ingresos según búsqueda, empresa y año
   const filteredRevenue = monthlyRevenue.filter((item) => {
     const matchesSearch = item.company_name.toLowerCase().includes(searchTerm.toLowerCase())
 
@@ -137,7 +137,7 @@ export function MonthlyRevenueView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by company..."
+              placeholder="Buscar por empresa..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -145,10 +145,10 @@ export function MonthlyRevenueView() {
           </div>
           <Select value={companyFilter} onValueChange={setCompanyFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by company" />
+              <SelectValue placeholder="Filtrar por empresa" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Companies</SelectItem>
+              <SelectItem value="all">Todas las empresas</SelectItem>
               {uniqueCompanies.map((company) => (
                 <SelectItem key={company} value={company}>
                   {company}
@@ -158,10 +158,10 @@ export function MonthlyRevenueView() {
           </Select>
           <Select value={yearFilter} onValueChange={setYearFilter}>
             <SelectTrigger className="w-[120px]">
-              <SelectValue placeholder="Filter by year" />
+              <SelectValue placeholder="Filtrar por año" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Years</SelectItem>
+              <SelectItem value="all">Todos los años</SelectItem>
               {uniqueYears.map((year) => (
                 <SelectItem key={year} value={year.toString()}>
                   {year}
@@ -172,7 +172,7 @@ export function MonthlyRevenueView() {
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -180,11 +180,11 @@ export function MonthlyRevenueView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Company</TableHead>
-              <TableHead>Year</TableHead>
-              <TableHead>Month</TableHead>
-              <TableHead>Currency</TableHead>
-              <TableHead>Revenue</TableHead>
+              <TableHead>Empresa</TableHead>
+              <TableHead>Año</TableHead>
+              <TableHead>Mes</TableHead>
+              <TableHead>Moneda</TableHead>
+              <TableHead>Ingresos</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -201,7 +201,7 @@ export function MonthlyRevenueView() {
             ) : (
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
-                  No revenue data found
+                  No se encontraron datos de ingresos
                 </TableCell>
               </TableRow>
             )}

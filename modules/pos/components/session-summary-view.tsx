@@ -8,7 +8,7 @@ import { DownloadIcon, Search } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-// Mock data for POS sessions
+// Datos simulados de sesiones POS
 const posSessions = [
   {
     session_id: 1001,
@@ -62,7 +62,7 @@ const posSessions = [
   },
 ]
 
-// Status colors for badges
+// Colores de estado para los badges
 const statusColors: Record<string, string> = {
   Open: "bg-green-100 text-green-800",
   Closed: "bg-blue-100 text-blue-800",
@@ -72,7 +72,7 @@ export function SessionSummaryView() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
 
-  // Filter sessions based on search term and status
+  // Filtrar sesiones según término de búsqueda y estado
   const filteredSessions = posSessions.filter((session) => {
     const matchesSearch =
       session.user_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -91,7 +91,7 @@ export function SessionSummaryView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by user or session ID..."
+              placeholder="Buscar por usuario o ID de sesión..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -99,18 +99,18 @@ export function SessionSummaryView() {
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by status" />
+              <SelectValue placeholder="Filtrar por estado" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="Open">Open</SelectItem>
-              <SelectItem value="Closed">Closed</SelectItem>
+              <SelectItem value="all">Todos los estados</SelectItem>
+              <SelectItem value="Open">Abierta</SelectItem>
+              <SelectItem value="Closed">Cerrada</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -118,14 +118,14 @@ export function SessionSummaryView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Session ID</TableHead>
-              <TableHead>User</TableHead>
-              <TableHead>Start Time</TableHead>
-              <TableHead>End Time</TableHead>
-              <TableHead>Opening</TableHead>
-              <TableHead>Closing</TableHead>
-              <TableHead>Variance</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>ID de sesión</TableHead>
+              <TableHead>Usuario</TableHead>
+              <TableHead>Hora de inicio</TableHead>
+              <TableHead>Hora de cierre</TableHead>
+              <TableHead>Apertura</TableHead>
+              <TableHead>Cierre</TableHead>
+              <TableHead>Variación</TableHead>
+              <TableHead>Estado</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -155,7 +155,7 @@ export function SessionSummaryView() {
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline" className={statusColors[session.status] || "bg-gray-100 text-gray-800"}>
-                      {session.status}
+                      {session.status === "Open" ? "Abierta" : "Cerrada"}
                     </Badge>
                   </TableCell>
                 </TableRow>
@@ -163,7 +163,7 @@ export function SessionSummaryView() {
             ) : (
               <TableRow>
                 <TableCell colSpan={8} className="text-center py-4 text-muted-foreground">
-                  No sessions found
+                  No se encontraron sesiones
                 </TableCell>
               </TableRow>
             )}

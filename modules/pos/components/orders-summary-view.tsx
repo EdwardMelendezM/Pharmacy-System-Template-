@@ -8,7 +8,7 @@ import { DownloadIcon, Search } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-// Mock data for POS orders
+// Datos simulados de órdenes POS
 const posOrders = [
   {
     order_id: 5001,
@@ -75,10 +75,10 @@ const posOrders = [
   },
 ]
 
-// Get unique session IDs for the filter
+// IDs de sesión únicos para el filtro
 const uniqueSessionIds = [...new Set(posOrders.map((order) => order.session_id))]
 
-// Payment method colors for badges
+// Colores de métodos de pago para badges
 const paymentMethodColors: Record<string, string> = {
   Cash: "bg-green-100 text-green-800",
   Card: "bg-blue-100 text-blue-800",
@@ -90,7 +90,7 @@ export function OrdersSummaryView() {
   const [sessionFilter, setSessionFilter] = useState("all")
   const [paymentMethodFilter, setPaymentMethodFilter] = useState("all")
 
-  // Filter orders based on search term, session, and payment method
+  // Filtrar órdenes según búsqueda, sesión y método de pago
   const filteredOrders = posOrders.filter((order) => {
     const matchesSearch = order.order_id.toString().includes(searchTerm)
 
@@ -108,7 +108,7 @@ export function OrdersSummaryView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by order ID..."
+              placeholder="Buscar por ID de orden..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -116,32 +116,32 @@ export function OrdersSummaryView() {
           </div>
           <Select value={sessionFilter} onValueChange={setSessionFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by session" />
+              <SelectValue placeholder="Filtrar por sesión" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Sessions</SelectItem>
+              <SelectItem value="all">Todas las sesiones</SelectItem>
               {uniqueSessionIds.map((id) => (
                 <SelectItem key={id} value={id.toString()}>
-                  Session {id}
+                  Sesión {id}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <Select value={paymentMethodFilter} onValueChange={setPaymentMethodFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by payment" />
+              <SelectValue placeholder="Filtrar por método de pago" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Methods</SelectItem>
-              <SelectItem value="Cash">Cash</SelectItem>
-              <SelectItem value="Card">Card</SelectItem>
-              <SelectItem value="Voucher">Voucher</SelectItem>
+              <SelectItem value="all">Todos los métodos</SelectItem>
+              <SelectItem value="Cash">Efectivo</SelectItem>
+              <SelectItem value="Card">Tarjeta</SelectItem>
+              <SelectItem value="Voucher">Vale</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -149,11 +149,11 @@ export function OrdersSummaryView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Session ID</TableHead>
-              <TableHead>Date & Time</TableHead>
-              <TableHead>Payment Method</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead>ID de orden</TableHead>
+              <TableHead>ID de sesión</TableHead>
+              <TableHead>Fecha y hora</TableHead>
+              <TableHead>Método de pago</TableHead>
+              <TableHead>Monto</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -168,7 +168,11 @@ export function OrdersSummaryView() {
                       variant="outline"
                       className={paymentMethodColors[order.payment_method] || "bg-gray-100 text-gray-800"}
                     >
-                      {order.payment_method}
+                      {order.payment_method === "Cash"
+                        ? "Efectivo"
+                        : order.payment_method === "Card"
+                          ? "Tarjeta"
+                          : "Vale"}
                     </Badge>
                   </TableCell>
                   <TableCell>S/ {order.amount.toFixed(2)}</TableCell>
@@ -177,7 +181,7 @@ export function OrdersSummaryView() {
             ) : (
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
-                  No orders found
+                  No se encontraron órdenes
                 </TableCell>
               </TableRow>
             )}

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { DownloadIcon, Search } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
-// Mock data for customer ledger
+// Datos simulados para el libro mayor de clientes
 const customerLedger = [
   {
     customer_id: 1,
@@ -56,12 +56,12 @@ const customerLedger = [
 export function CustomerLedgerView() {
   const [searchTerm, setSearchTerm] = useState("")
 
-  // Filter customers based on search term
+  // Filtrar clientes según el término de búsqueda
   const filteredCustomers = customerLedger.filter((customer) =>
     customer.customer_name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
-  // Calculate totals
+  // Calcular totales
   const totalBilled = customerLedger.reduce((sum, customer) => sum + customer.total_billed, 0)
   const totalPaid = customerLedger.reduce((sum, customer) => sum + customer.total_paid, 0)
   const totalBalance = customerLedger.reduce((sum, customer) => sum + customer.balance, 0)
@@ -72,7 +72,7 @@ export function CustomerLedgerView() {
         <Card>
           <CardContent className="pt-6">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Billed</p>
+              <p className="text-sm font-medium text-muted-foreground">Total Facturado</p>
               <h3 className="text-2xl font-bold">S/ {totalBilled.toFixed(2)}</h3>
             </div>
           </CardContent>
@@ -80,7 +80,7 @@ export function CustomerLedgerView() {
         <Card>
           <CardContent className="pt-6">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Paid</p>
+              <p className="text-sm font-medium text-muted-foreground">Total Pagado</p>
               <h3 className="text-2xl font-bold">S/ {totalPaid.toFixed(2)}</h3>
             </div>
           </CardContent>
@@ -88,7 +88,7 @@ export function CustomerLedgerView() {
         <Card>
           <CardContent className="pt-6">
             <div>
-              <p className="text-sm font-medium text-muted-foreground">Outstanding Balance</p>
+              <p className="text-sm font-medium text-muted-foreground">Saldo Pendiente</p>
               <h3 className="text-2xl font-bold">S/ {totalBalance.toFixed(2)}</h3>
             </div>
           </CardContent>
@@ -100,7 +100,7 @@ export function CustomerLedgerView() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search by customer name..."
+            placeholder="Buscar por nombre de cliente..."
             className="pl-8 max-w-md"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -108,7 +108,7 @@ export function CustomerLedgerView() {
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -116,10 +116,10 @@ export function CustomerLedgerView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Customer</TableHead>
-              <TableHead>Total Billed</TableHead>
-              <TableHead>Total Paid</TableHead>
-              <TableHead>Balance</TableHead>
+              <TableHead>Cliente</TableHead>
+              <TableHead>Total Facturado</TableHead>
+              <TableHead>Total Pagado</TableHead>
+              <TableHead>Saldo</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -137,7 +137,7 @@ export function CustomerLedgerView() {
             ) : (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-4 text-muted-foreground">
-                  No customers found
+                  No se encontraron clientes
                 </TableCell>
               </TableRow>
             )}

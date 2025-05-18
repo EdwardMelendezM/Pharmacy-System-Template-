@@ -18,52 +18,53 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Textarea } from "@/components/ui/textarea"
 
+// Esquema de validación para el formulario de factura
 const invoiceFormSchema = z
   .object({
     invoiceNumber: z.string().min(1, {
-      message: "Invoice number is required.",
+      message: "El número de factura es obligatorio.",
     }),
     date: z.date({
-      required_error: "Date is required.",
+      required_error: "La fecha de la factura es obligatoria.",
     }),
     dueDate: z.date({
-      required_error: "Due date is required.",
+      required_error: "La fecha de vencimiento es obligatoria.",
     }),
     customer: z.string({
-      required_error: "Customer is required.",
+      required_error: "El cliente es obligatorio.",
     }),
     currency: z.string({
-      required_error: "Currency is required.",
+      required_error: "La moneda es obligatoria.",
     }),
     notes: z.string().optional(),
     items: z
       .array(
         z.object({
           product: z.string({
-            required_error: "Product is required.",
+            required_error: "El producto es obligatorio.",
           }),
           description: z.string().optional(),
           quantity: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-            message: "Quantity must be a positive number.",
+            message: "La cantidad debe ser un número positivo.",
           }),
           unitPrice: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-            message: "Unit price must be a valid number.",
+            message: "El precio unitario debe ser un número válido.",
           }),
           tax: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-            message: "Tax must be a valid number.",
+            message: "El impuesto debe ser un número válido.",
           }),
         }),
       )
       .min(1, {
-        message: "At least one item is required.",
+        message: "Se requiere al menos un producto.",
       }),
   })
   .refine((data) => data.dueDate >= data.date, {
-    message: "Due date must be after invoice date",
+    message: "La fecha de vencimiento debe ser posterior a la fecha de la factura",
     path: ["dueDate"],
   })
 
-// Mock data for customers and products
+// Datos simulados para clientes y productos
 const customers = [
   { id: 1, name: "Hospital San Juan" },
   { id: 2, name: "Clínica Santa María" },
@@ -89,7 +90,7 @@ export function CreateInvoiceForm() {
     defaultValues: {
       invoiceNumber: `F001-${String(Math.floor(Math.random() * 10000)).padStart(5, "0")}`,
       date: new Date(),
-      dueDate: new Date(new Date().setDate(new Date().getDate() + 30)), // 30 days from now
+      dueDate: new Date(new Date().setDate(new Date().getDate() + 30)), // 30 días desde hoy
       currency: "PEN",
       notes: "",
       items: [{ product: "", description: "", quantity: "1", unitPrice: "0", tax: "18" }],
@@ -101,19 +102,19 @@ export function CreateInvoiceForm() {
   function onSubmit(values: z.infer<typeof invoiceFormSchema>) {
     setIsSubmitting(true)
 
-    // Simulate API call
+    // Simulación de llamada a API
     setTimeout(() => {
       console.log(values)
       toast({
-        title: "Invoice created successfully",
-        description: `Invoice ${values.invoiceNumber} has been created.`,
+        title: "Factura creada exitosamente",
+        description: `La factura ${values.invoiceNumber} ha sido creada.`,
       })
       setIsSubmitting(false)
       router.push("/billing?tab=invoices")
     }, 1000)
   }
 
-  // Calculate totals
+  // Cálculo de totales
   const items = form.watch("items")
   const subtotal = items.reduce((sum, item) => {
     return sum + (Number(item.quantity) || 0) * (Number(item.unitPrice) || 0)
@@ -129,8 +130,8 @@ export function CreateInvoiceForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create New Invoice</CardTitle>
-        <CardDescription>Create a new invoice for a customer.</CardDescription>
+        <CardTitle>Crear nueva factura</CardTitle>
+        <CardDescription>Crea una nueva factura para un cliente.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -141,7 +142,7 @@ export function CreateInvoiceForm() {
                 name="invoiceNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Invoice Number</FormLabel>
+                    <FormLabel>Número de factura</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -154,7 +155,7 @@ export function CreateInvoiceForm() {
                 name="date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Invoice Date</FormLabel>
+                    <FormLabel>Fecha</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -162,7 +163,7 @@ export function CreateInvoiceForm() {
                             variant={"outline"}
                             className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                           >
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                            {field.value ? format(field.value, "PPP") : <span>Elige una fecha</span>}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
@@ -186,7 +187,7 @@ export function CreateInvoiceForm() {
                 name="dueDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Due Date</FormLabel>
+                    <FormLabel>Fecha de vencimiento</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -194,7 +195,7 @@ export function CreateInvoiceForm() {
                             variant={"outline"}
                             className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                           >
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                            {field.value ? format(field.value, "PPP") : <span>Selecciona una fecha</span>}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
@@ -221,11 +222,11 @@ export function CreateInvoiceForm() {
                 name="customer"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer</FormLabel>
+                    <FormLabel>Cliente</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a customer" />
+                          <SelectValue placeholder="Selecciona un cliente" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -245,16 +246,16 @@ export function CreateInvoiceForm() {
                 name="currency"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Currency</FormLabel>
+                    <FormLabel>Moneda</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select currency" />
+                          <SelectValue placeholder="Selecciona una moneda" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="PEN">PEN - Peruvian Sol</SelectItem>
-                        <SelectItem value="USD">USD - US Dollar</SelectItem>
+                        <SelectItem value="PEN">PEN - Sol Peruano</SelectItem>
+                        <SelectItem value="USD">USD - Dólar Estadounidense</SelectItem>
                         <SelectItem value="EUR">EUR - Euro</SelectItem>
                       </SelectContent>
                     </Select>
@@ -266,7 +267,7 @@ export function CreateInvoiceForm() {
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">Invoice Items</h3>
+                <h3 className="text-lg font-medium">Ítems de factura</h3>
                 <Button
                   type="button"
                   variant="outline"
@@ -279,7 +280,7 @@ export function CreateInvoiceForm() {
                   }}
                 >
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Item
+                  Agregar ítem
                 </Button>
               </div>
 
@@ -287,23 +288,27 @@ export function CreateInvoiceForm() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b bg-muted/50">
-                      <th className="py-3 px-4 text-left text-sm font-medium">Product</th>
-                      <th className="py-3 px-4 text-left text-sm font-medium">Description</th>
-                      <th className="py-3 px-4 text-right text-sm font-medium">Quantity</th>
-                      <th className="py-3 px-4 text-right text-sm font-medium">Unit Price</th>
-                      <th className="py-3 px-4 text-right text-sm font-medium">Tax %</th>
+                      <th className="py-3 px-4 text-left text-sm font-medium">Producto</th>
+                      <th className="py-3 px-4 text-left text-sm font-medium">Descripción</th>
+                      <th className="py-3 px-4 text-right text-sm font-medium">Cantidad</th>
+                      <th className="py-3 px-4 text-right text-sm font-medium">Precio Unitario</th>
+                      <th className="py-3 px-4 text-right text-sm font-medium">% IGV</th>
                       <th className="py-3 px-4 text-right text-sm font-medium">Total</th>
-                      <th className="py-3 px-4 text-center text-sm font-medium w-[80px]">Actions</th>
+                      <th className="py-3 px-4 text-center text-sm font-medium w-[80px]">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     {items.map((item, index) => {
+                      // Cálculo del total del ítem: cantidad * precio unitario
                       const itemTotal = (Number(item.quantity) || 0) * (Number(item.unitPrice) || 0)
+                      // Cálculo del impuesto del ítem en base a porcentaje
                       const itemTax = (itemTotal * (Number(item.tax) || 0)) / 100
+                      // Total con impuesto incluido
                       const itemTotalWithTax = itemTotal + itemTax
 
                       return (
                         <tr key={index} className="border-b">
+                          {/* Columna Producto */}
                           <td className="py-3 px-4">
                             <FormField
                               control={form.control}
@@ -314,7 +319,7 @@ export function CreateInvoiceForm() {
                                     <Select
                                       onValueChange={(value) => {
                                         field.onChange(value)
-                                        // Auto-fill unit price based on selected product
+                                        // Auto-llenar el precio unitario basado en el producto seleccionado
                                         const product = products.find((p) => p.id === value)
                                         if (product) {
                                           form.setValue(`items.${index}.unitPrice`, product.price.toString())
@@ -324,7 +329,7 @@ export function CreateInvoiceForm() {
                                       defaultValue={field.value}
                                     >
                                       <SelectTrigger className="w-full border-none shadow-none h-8 p-0 focus:ring-0">
-                                        <SelectValue placeholder="Select product" />
+                                        <SelectValue placeholder="Seleccionar producto" />
                                       </SelectTrigger>
                                       <SelectContent>
                                         {products.map((product) => (
@@ -340,6 +345,8 @@ export function CreateInvoiceForm() {
                               )}
                             />
                           </td>
+
+                          {/* Columna Descripción */}
                           <td className="py-3 px-4">
                             <FormField
                               control={form.control}
@@ -348,7 +355,7 @@ export function CreateInvoiceForm() {
                                 <FormItem className="space-y-0">
                                   <FormControl>
                                     <Input
-                                      placeholder="Description"
+                                      placeholder="Descripción"
                                       className="border-none shadow-none h-8 p-0 focus:ring-0"
                                       {...field}
                                     />
@@ -358,6 +365,8 @@ export function CreateInvoiceForm() {
                               )}
                             />
                           </td>
+
+                          {/* Columna Cantidad */}
                           <td className="py-3 px-4">
                             <FormField
                               control={form.control}
@@ -379,6 +388,8 @@ export function CreateInvoiceForm() {
                               )}
                             />
                           </td>
+
+                          {/* Columna Precio Unitario */}
                           <td className="py-3 px-4">
                             <FormField
                               control={form.control}
@@ -400,6 +411,8 @@ export function CreateInvoiceForm() {
                               )}
                             />
                           </td>
+
+                          {/* Columna Impuesto */}
                           <td className="py-3 px-4">
                             <FormField
                               control={form.control}
@@ -421,9 +434,13 @@ export function CreateInvoiceForm() {
                               )}
                             />
                           </td>
+
+                          {/* Columna Total con impuesto, alineado a la derecha */}
                           <td className="py-3 px-4 text-right">
-                            {form.watch(`items.${index}.currency`) || "S/"} {itemTotalWithTax.toFixed(2)}
+                            {form.getValues(`items.${index}.currency`) || "S/"} {itemTotalWithTax.toFixed(2)}
                           </td>
+
+                          {/* Columna de botón para eliminar ítem, centrado */}
                           <td className="py-3 px-4 text-center">
                             {items.length > 1 && (
                               <Button
@@ -432,8 +449,8 @@ export function CreateInvoiceForm() {
                                 size="sm"
                                 onClick={() => {
                                   const newItems = [...items]
-                                  newItems.splice(index, 1)
-                                  form.setValue("items", newItems)
+                                  newItems.splice(index, 1) // Elimina el ítem actual
+                                  form.setValue("items", newItems) // Actualiza el estado del formulario
                                 }}
                               >
                                 <Trash className="h-4 w-4 text-red-500" />
@@ -443,6 +460,8 @@ export function CreateInvoiceForm() {
                         </tr>
                       )
                     })}
+
+                    {/* Fila subtotal */}
                     <tr className="bg-muted/30">
                       <td className="py-3 px-4 font-medium" colSpan={5}>
                         Subtotal
@@ -452,15 +471,19 @@ export function CreateInvoiceForm() {
                       </td>
                       <td></td>
                     </tr>
+
+                    {/* Fila impuestos */}
                     <tr className="bg-muted/30">
                       <td className="py-3 px-4 font-medium" colSpan={5}>
-                        Tax
+                        Impuesto
                       </td>
                       <td className="py-3 px-4 text-right font-medium">
                         {form.watch("currency") || "S/"} {taxTotal.toFixed(2)}
                       </td>
                       <td></td>
                     </tr>
+
+                    {/* Fila total */}
                     <tr className="bg-muted/30">
                       <td className="py-3 px-4 font-medium" colSpan={5}>
                         Total
@@ -480,11 +503,11 @@ export function CreateInvoiceForm() {
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Notes</FormLabel>
+                  <FormLabel>Notas</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Additional notes for the invoice" className="resize-none" {...field} />
+                    <Textarea placeholder="Notas adicionales para la factura" className="resize-none" {...field} />
                   </FormControl>
-                  <FormDescription>These notes will appear on the invoice.</FormDescription>
+                  <FormDescription>Estas notas aparecerán en la factura.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -492,10 +515,10 @@ export function CreateInvoiceForm() {
 
             <CardFooter className="flex justify-between px-0">
               <Button variant="outline" type="button" onClick={() => router.back()}>
-                Cancel
+                Cancelar
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Creating..." : "Create Invoice"}
+                {isSubmitting ? "Creando..." : "Crear Factura"}
               </Button>
             </CardFooter>
           </form>

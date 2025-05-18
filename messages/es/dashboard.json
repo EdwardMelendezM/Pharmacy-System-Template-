@@ -1,0 +1,29 @@
+{
+  "title": "Panel de Control",
+  "modules": {
+    "users": {
+      "title": "Usuarios y Empresas",
+      "description": "Gestionar usuarios, roles y perfiles de empresas"
+    },
+    "accounting": {
+      "title": "Contabilidad",
+      "description": "Informes financieros, libros contables y transacciones"
+    },
+    "billing": {
+      "title": "Facturación",
+      "description": "Facturas, pagos e historial de facturación"
+    },
+    "inventory": {
+      "title": "Inventario",
+      "description": "Gestión de stock, productos y proveedores"
+    },
+    "pos": {
+      "title": "Punto de Venta",
+      "description": "Ventas, transacciones y checkout de clientes"
+    },
+    "settings": {
+      "title": "Configuración",
+      "description": "Configuración del sistema y preferencias"
+    }
+  }
+}

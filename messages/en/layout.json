@@ -1,0 +1,40 @@
+{
+  "app": {
+    "name": "Pharmacy System",
+    "description": "A comprehensive solution for pharmacy management"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "users": "Users & Companies",
+    "accounting": "Accounting",
+    "billing": "Billing",
+    "inventory": "Inventory",
+    "pos": "Point of Sale",
+    "settings": "Settings"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import"
+  },
+  "user": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "settings": {
+    "general": "General",
+    "pharmacy": "Pharmacy",
+    "billing": "Billing",
+    "users": "Users",
+    "integrations": "Integrations",
+    "company": "Company Information",
+    "system": "System Preferences"
+  }
+}

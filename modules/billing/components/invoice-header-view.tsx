@@ -8,7 +8,7 @@ import { DownloadIcon, Search } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-// Mock data for invoice headers
+// Datos simulados para encabezados de facturas
 const invoiceHeaders = [
   {
     invoice_id: 1001,
@@ -66,7 +66,7 @@ const invoiceHeaders = [
   },
 ]
 
-// Status colors for badges
+// Colores de estado para los badges
 const statusColors: Record<string, string> = {
   Accepted: "bg-green-100 text-green-800",
   Rejected: "bg-red-100 text-red-800",
@@ -77,7 +77,7 @@ export function InvoiceHeaderView() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
 
-  // Filter invoices based on search term and status
+  // Filtrar facturas según término de búsqueda y estado
   const filteredInvoices = invoiceHeaders.filter((invoice) => {
     const matchesSearch =
       invoice.invoice_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -96,7 +96,7 @@ export function InvoiceHeaderView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by invoice code or customer..."
+              placeholder="Buscar por código o cliente..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -104,19 +104,19 @@ export function InvoiceHeaderView() {
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by status" />
+              <SelectValue placeholder="Filtrar por estado" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="Accepted">Accepted</SelectItem>
-              <SelectItem value="Rejected">Rejected</SelectItem>
-              <SelectItem value="Pending">Pending</SelectItem>
+              <SelectItem value="all">Todos los estados</SelectItem>
+              <SelectItem value="Accepted">Aceptado</SelectItem>
+              <SelectItem value="Rejected">Rechazado</SelectItem>
+              <SelectItem value="Pending">Pendiente</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -124,11 +124,11 @@ export function InvoiceHeaderView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Invoice Code</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Issue Date</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>SUNAT Status</TableHead>
+              <TableHead>Código</TableHead>
+              <TableHead>Cliente</TableHead>
+              <TableHead>Fecha de emisión</TableHead>
+              <TableHead>Monto</TableHead>
+              <TableHead>Estado SUNAT</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -154,7 +154,7 @@ export function InvoiceHeaderView() {
             ) : (
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
-                  No invoices found
+                  No se encontraron facturas
                 </TableCell>
               </TableRow>
             )}

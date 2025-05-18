@@ -1,0 +1,40 @@
+{
+  "app": {
+    "name": "Sistema de Farmacia",
+    "description": "Una solución integral para la gestión de farmacias"
+  },
+  "navigation": {
+    "dashboard": "Inicio",
+    "users": "Usuarios y Empresas",
+    "accounting": "Contabilidad",
+    "billing": "Facturación",
+    "inventory": "Inventario",
+    "pos": "Punto de Venta",
+    "settings": "Ajustes"
+  },
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "create": "Crear",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar"
+  },
+  "user": {
+    "profile": "Perfil",
+    "settings": "Ajustes",
+    "logout": "Cerrar sesión"
+  },
+  "settings": {
+    "general": "General",
+    "pharmacy": "Farmacia",
+    "billing": "Facturación",
+    "users": "Usuarios",
+    "integrations": "Integraciones",
+    "company": "Información de la empresa",
+    "system": "Preferencias del sistema"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Dashboard",
+  "modules": {
+    "users": {
+      "title": "Users & Companies",
+      "description": "Manage users, roles, and company profiles"
+    },
+    "accounting": {
+      "title": "Accounting",
+      "description": "Financial reports, ledgers, and transactions"
+    },
+    "billing": {
+      "title": "Billing",
+      "description": "Invoices, payments, and billing history"
+    },
+    "inventory": {
+      "title": "Inventory",
+      "description": "Stock management, products, and suppliers"
+    },
+    "pos": {
+      "title": "Point of Sale",
+      "description": "Sales, transactions, and customer checkout"
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "System configuration and preferences"
+    }
+  }
+}

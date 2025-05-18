@@ -118,7 +118,7 @@ export function JournalEntriesView() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by account or description..."
+              placeholder="Buscar por cuenta o descripción..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -126,10 +126,10 @@ export function JournalEntriesView() {
           </div>
           <Select value={moveFilter} onValueChange={setMoveFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by entry" />
+              <SelectValue placeholder="Filtrar por asiento" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Entries</SelectItem>
+              <SelectItem value="all">Todos los asientos</SelectItem>
               {uniqueMoveIds.map((moveId) => (
                 <SelectItem key={moveId} value={moveId}>
                   {moveId}
@@ -140,7 +140,7 @@ export function JournalEntriesView() {
         </div>
         <Button variant="outline" size="icon" className="h-9 w-9">
           <DownloadIcon className="h-4 w-4" />
-          <span className="sr-only">Download data</span>
+          <span className="sr-only">Descargar datos</span>
         </Button>
       </div>
 
@@ -148,12 +148,12 @@ export function JournalEntriesView() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Entry ID</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Account</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Debit</TableHead>
-              <TableHead>Credit</TableHead>
+              <TableHead>ID del Asiento</TableHead>
+              <TableHead>Fecha</TableHead>
+              <TableHead>Cuenta</TableHead>
+              <TableHead>Descripción</TableHead>
+              <TableHead>Débito</TableHead>
+              <TableHead>Crédito</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -178,7 +178,7 @@ export function JournalEntriesView() {
             ) : (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-4 text-muted-foreground">
-                  No journal entries found
+                  No se encontraron asientos contables
                 </TableCell>
               </TableRow>
             )}

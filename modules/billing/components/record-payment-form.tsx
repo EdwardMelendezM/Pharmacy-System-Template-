@@ -1,4 +1,4 @@
-"use client"
+"use client" // "usar cliente" (indicador de Next.js para que este componente se renderice en cliente)
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -20,25 +20,25 @@ import { Textarea } from "@/components/ui/textarea"
 
 const paymentFormSchema = z.object({
   date: z.date({
-    required_error: "Date is required.",
+    required_error: "La fecha es obligatoria.",
   }),
   customer: z.string({
-    required_error: "Customer is required.",
+    required_error: "El cliente es obligatorio.",
   }),
   invoice: z.string({
-    required_error: "Invoice is required.",
+    required_error: "La factura es obligatoria.",
   }),
   amount: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-    message: "Amount must be a positive number.",
+    message: "El monto debe ser un número positivo.",
   }),
   paymentMethod: z.enum(["cash", "bank_transfer", "credit_card", "check"], {
-    required_error: "Payment method is required.",
+    required_error: "El método de pago es obligatorio.",
   }),
   reference: z.string().optional(),
   notes: z.string().optional(),
 })
 
-// Mock data for customers and invoices
+// Datos simulados para clientes y facturas
 const customers = [
   { id: 1, name: "Hospital San Juan" },
   { id: 2, name: "Clínica Santa María" },
@@ -71,7 +71,7 @@ export function RecordPaymentForm() {
     },
   })
 
-  // Filter invoices based on selected customer
+  // Filtrar facturas según el cliente seleccionado
   const filteredInvoices = selectedCustomer
     ? invoices.filter((invoice) => invoice.customer === Number(selectedCustomer) && invoice.balance > 0)
     : []
@@ -79,12 +79,12 @@ export function RecordPaymentForm() {
   function onSubmit(values: z.infer<typeof paymentFormSchema>) {
     setIsSubmitting(true)
 
-    // Simulate API call
+    // Simular llamada a API
     setTimeout(() => {
       console.log(values)
       toast({
-        title: "Payment recorded successfully",
-        description: `Payment of ${values.amount} has been recorded for invoice ${values.invoice}.`,
+        title: "Pago registrado exitosamente",
+        description: `Se ha registrado un pago de ${values.amount} para la factura ${values.invoice}.`,
       })
       setIsSubmitting(false)
       router.push("/billing?tab=customer-ledger")
@@ -94,8 +94,8 @@ export function RecordPaymentForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Record Payment</CardTitle>
-        <CardDescription>Record a payment from a customer against an invoice.</CardDescription>
+        <CardTitle>Registrar Pago</CardTitle>
+        <CardDescription>Registrar un pago de un cliente contra una factura.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -106,7 +106,7 @@ export function RecordPaymentForm() {
                 name="date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Payment Date</FormLabel>
+                    <FormLabel>Fecha de Pago</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -114,7 +114,7 @@ export function RecordPaymentForm() {
                             variant={"outline"}
                             className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                           >
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                            {field.value ? format(field.value, "PPP") : <span>Seleccione una fecha</span>}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
@@ -138,12 +138,12 @@ export function RecordPaymentForm() {
                 name="customer"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer</FormLabel>
+                    <FormLabel>Cliente</FormLabel>
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value)
                         setSelectedCustomer(value)
-                        // Reset invoice when customer changes
+                        // Resetear factura cuando cambia el cliente
                         form.setValue("invoice", "")
                         form.setValue("amount", "")
                         setSelectedInvoice(null)
@@ -152,7 +152,7 @@ export function RecordPaymentForm() {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a customer" />
+                          <SelectValue placeholder="Seleccione un cliente" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -174,7 +174,7 @@ export function RecordPaymentForm() {
               name="invoice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Invoice</FormLabel>
+                  <FormLabel>Factura</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value)
@@ -192,10 +192,10 @@ export function RecordPaymentForm() {
                         <SelectValue
                           placeholder={
                             !selectedCustomer
-                              ? "Select a customer first"
+                              ? "Primero seleccione un cliente"
                               : filteredInvoices.length === 0
-                                ? "No outstanding invoices"
-                                : "Select an invoice"
+                                ? "No hay facturas pendientes"
+                                : "Seleccione una factura"
                           }
                         />
                       </SelectTrigger>
@@ -203,12 +203,12 @@ export function RecordPaymentForm() {
                     <SelectContent>
                       {filteredInvoices.map((invoice) => (
                         <SelectItem key={invoice.id} value={invoice.id.toString()}>
-                          {invoice.code} - Balance: S/ {invoice.balance.toFixed(2)}
+                          {invoice.code} - Saldo: S/ {invoice.balance.toFixed(2)}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormDescription>Only invoices with outstanding balances are shown.</FormDescription>
+                  <FormDescription>Sólo se muestran facturas con saldos pendientes.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -216,22 +216,22 @@ export function RecordPaymentForm() {
 
             {selectedInvoice && (
               <div className="rounded-md border p-4 bg-muted/30">
-                <h3 className="font-medium mb-2">Invoice Details</h3>
+                <h3 className="font-medium mb-2">Detalles de la Factura</h3>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <span className="text-muted-foreground">Invoice Number:</span>
+                    <span className="text-muted-foreground">Número de Factura:</span>
                     <span className="ml-2 font-medium">{selectedInvoice.code}</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Date:</span>
+                    <span className="text-muted-foreground">Fecha:</span>
                     <span className="ml-2 font-medium">{selectedInvoice.date}</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Total Amount:</span>
+                    <span className="text-muted-foreground">Monto Total:</span>
                     <span className="ml-2 font-medium">S/ {selectedInvoice.amount.toFixed(2)}</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Outstanding Balance:</span>
+                    <span className="text-muted-foreground">Saldo Pendiente:</span>
                     <span className="ml-2 font-medium">S/ {selectedInvoice.balance.toFixed(2)}</span>
                   </div>
                 </div>
@@ -244,14 +244,10 @@ export function RecordPaymentForm() {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Payment Amount</FormLabel>
+                    <FormLabel>Monto</FormLabel>
                     <FormControl>
-                      <div className="relative">
-                        <span className="absolute left-3 top-2.5">S/</span>
-                        <Input placeholder="0.00" className="pl-8" {...field} disabled={!selectedInvoice} />
-                      </div>
+                      <Input type="number" step="0.01" {...field} />
                     </FormControl>
-                    <FormDescription>Amount to be applied to the invoice.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -261,18 +257,16 @@ export function RecordPaymentForm() {
                 name="paymentMethod"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Payment Method</FormLabel>
+                    <FormLabel>Método de Pago</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select payment method" />
-                        </SelectTrigger>
-                      </FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccione método de pago" />
+                      </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="cash">Cash</SelectItem>
-                        <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
-                        <SelectItem value="credit_card">Credit Card</SelectItem>
-                        <SelectItem value="check">Check</SelectItem>
+                        <SelectItem value="cash">Efectivo</SelectItem>
+                        <SelectItem value="bank_transfer">Transferencia Bancaria</SelectItem>
+                        <SelectItem value="credit_card">Tarjeta de Crédito</SelectItem>
+                        <SelectItem value="check">Cheque</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -286,11 +280,10 @@ export function RecordPaymentForm() {
               name="reference"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Reference Number</FormLabel>
+                  <FormLabel>Referencia (opcional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Check number, transaction ID" {...field} />
+                    <Input {...field} />
                   </FormControl>
-                  <FormDescription>Optional reference number for the payment.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -301,26 +294,21 @@ export function RecordPaymentForm() {
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Notes</FormLabel>
+                  <FormLabel>Notas (opcional)</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Any additional information about this payment"
-                      className="resize-none"
-                      {...field}
-                    />
+                    <Textarea {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="flex justify-end space-x-4">
-              <Button type="button" variant="outline" onClick={() => router.push("/billing")} disabled={isSubmitting}>
-                <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                Cancel
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" onClick={() => router.back()} disabled={isSubmitting}>
+                <ArrowLeftIcon className="mr-2 h-4 w-4" /> Volver
               </Button>
-              <Button type="submit" disabled={isSubmitting || !selectedInvoice}>
-                {isSubmitting ? "Recording..." : "Record Payment"}
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Registrando..." : "Registrar Pago"}
               </Button>
             </div>
           </form>
