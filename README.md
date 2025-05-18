@@ -1,74 +1,61 @@
-# Pharmacy Management SaaS Platform
+# 🏥 Pharmacy Management System – ERP Template
 
-A comprehensive SaaS solution for pharmacy management with multi-tenancy and multilanguage support.
+A modular and extensible ERP template for pharmacies, built to manage sales, inventory, billing, accounting, and compliance—all in one system.
 
-## Architecture Overview
+## 📦 Overview
 
-This application is built as a SaaS (Software as a Service) platform with the following key architectural components:
+This project provides a ready-to-integrate backend structure for a **pharmacy business management system**, with pre-defined data models, mock data, and SQL reporting views for real-world operations.
 
-### 1. Multi-tenancy
+## ✨ Features
 
-The system uses a multi-tenant architecture where multiple pharmacy organizations can use the same application instance with complete data isolation:
+### ✅ User & Company Management
+- Multi-company support
+- User roles, permissions, and audit trails
+- Company overview with user counts
 
-- **Database Isolation**: Each tenant's data is isolated using a tenant ID in all database queries
-- **Tenant Context**: A tenant context is maintained throughout the request lifecycle
-- **Middleware**: Tenant resolution happens in middleware based on subdomain
+### 🧾 Billing & Invoicing
+- Electronic invoice structure (SUNAT-ready)
+- Invoice headers, detailed lines, and customer ledgers
+- Monthly revenue tracking
+- Overdue invoice alerts
 
-### 2. Internationalization (i18n)
+### 🛒 Point of Sale (POS)
+- POS session handling
+- Order and payment processing
+- Daily closure reports with variances
 
-The application supports multiple languages with:
+### 📦 Inventory Management
+- Product categories and unit conversions
+- Warehouse and location structure
+- Lot management and expiration control
+- Low stock alerts and reorder suggestions
+- Full lot traceability
 
-- **Locale Detection**: Automatic detection of user's preferred language
-- **Translation Files**: JSON-based translation files for all supported languages
-- **Language Switcher**: UI component for users to change their language preference
-- **Locale-aware Formatting**: Date, time, currency, and number formatting based on locale
+### 📊 Accounting
+- Chart of accounts with hierarchy
+- Journal entries and move lines
+- Trial balance and profit & loss summaries
+- Pending reconciliation view
 
-### 3. Subscription Management
+### 📈 Cross-Module Reports
+- Company-wide KPIs
+- Login and activity audit logs
+- Custom views for dashboards
 
-The platform includes subscription management features:
+## 🧪 Technologies
 
-- **Pricing Plans**: Different tiers with varying features and limits
-- **Billing**: Integration with payment processors for recurring billing
-- **Usage Tracking**: Monitoring of resource usage against plan limits
-- **Plan Upgrades/Downgrades**: Self-service plan changes
+- **Language:** TypeScript
+- **Database:** PostgreSQL/MySQL (view definitions are SQL-ready)
+- **Architecture:** Modular & scalable backend-ready structure
+- **Use case:** API development, admin dashboards, analytics, pharmacy ERP systems
 
-### 4. Authentication and Authorization
+## 🤝 Contributing
+Feel free to submit PRs or issues to improve data models, add more views, or suggest improvements.
 
-Robust security model with:
+## 📄 License
+This project is open-source under the MIT License.
 
-- **User Authentication**: Secure login and session management
-- **Role-based Access Control**: Different permission levels within each tenant
-- **Tenant Isolation**: Users can only access data from their own tenant
-- **Invitation System**: Tenant owners can invite new users
-
-## Technical Stack
-
-- **Frontend**: Next.js with App Router, React, Tailwind CSS
-- **UI Components**: shadcn/ui component library
-- **Internationalization**: next-intl for translations and formatting
-- **Forms**: react-hook-form with zod validation
-- **Authentication**: Custom auth system with JWT
-- **Database**: Designed for SQL databases with tenant isolation
-- **Deployment**: Optimized for cloud deployment with containerization
-
-## Development Setup
-
-1. Clone the repository
-2. Install dependencies:
-   \`\`\`
-   npm install
-   \`\`\`
-3. Set up environment variables (see `.env.example`)
-4. Run the development server:
-   \`\`\`
-   npm run dev
-   \`\`\`
-
-## Deployment
-
-The application is designed to be deployed as a containerized application to any cloud provider that supports Docker containers.
-Maybe xd
-
-## License
-
-This project is proprietary software. All rights reserved.
+## Next steps
+- Include multilanguages
+- Include multitenants
+- Include monitoring with sentry
